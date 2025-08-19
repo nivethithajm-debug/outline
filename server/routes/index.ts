@@ -27,12 +27,16 @@ const router = new Router();
 koa.use<BaseContext, UserAgentContext>(userAgent);
 
 // serve public assets
-router.use(["/images/*", "/email/*", "/fonts/*"], async (ctx, next) => {
+router.use([`${env.CONTEXT_PATH || ""}/images/*`, `${env.CONTEXT_PATH || ""}/email/*`, `${env.CONTEXT_PATH || ""}/fonts/*`], async (ctx, next) => {
   let done;
 
   if (ctx.method === "HEAD" || ctx.method === "GET") {
     try {
-      done = await send(ctx, ctx.path, {
+      // Remove context path from the request path before serving
+      const contextPath = env.CONTEXT_PATH || "";
+      const assetPath = contextPath ? ctx.path.substring(contextPath.length) : ctx.path;
+      
+      done = await send(ctx, assetPath, {
         root: path.resolve(__dirname, "../../../public"),
         // 7 day expiry, these assets are mostly static but do not contain a hash
         maxAge: Day.ms * 7,

@@ -68,7 +68,7 @@ export const renderApp = async (
     allowIndexing = true,
   } = options;
 
-  if (ctx.request.path === "/realtime/") {
+  if (ctx.request.path === `${env.CONTEXT_PATH || ""}/realtime/`) {
     return next();
   }
 

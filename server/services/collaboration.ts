@@ -24,7 +24,7 @@ export default function init(
   server: http.Server,
   serviceNames: string[]
 ) {
-  const path = "/collaboration";
+  const path = `${env.CONTEXT_PATH || ""}/collaboration`;
   const wss = new WebSocket.Server({
     noServer: true,
     maxPayload: DocumentValidation.maxStateLength,
@@ -90,7 +90,7 @@ export default function init(
       }
 
       if (
-        req.url?.startsWith("/realtime") &&
+        req.url?.startsWith(`${env.CONTEXT_PATH || ""}/realtime`) &&
         serviceNames.includes("websockets")
       ) {
         // Nothing to do, the websockets service will handle this request

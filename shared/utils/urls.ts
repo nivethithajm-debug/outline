@@ -4,13 +4,13 @@ import { isBrowser } from "./browser";
 import { parseDomain } from "./domains";
 
 /**
- * Prepends the CDN url to the given path (If a CDN is configured).
+ * Prepends the CDN url and context path to the given path (If a CDN is configured).
  *
  * @param path The path to prepend the CDN url to.
- * @returns The path with the CDN url prepended.
+ * @returns The path with the CDN url and context path prepended.
  */
 export function cdnPath(path: string): string {
-  return `${env.CDN_URL ?? ""}${path}`;
+  return `${env.CDN_URL ?? ""}${env.CONTEXT_PATH ?? ""}${path}`;
 }
 
 /**
@@ -67,9 +67,10 @@ export function isInternalUrl(href: string) {
 export function isDocumentUrl(url: string) {
   try {
     const parsed = new URL(url, env.URL);
+    const contextPath = env.CONTEXT_PATH ?? "";
     return (
       isInternalUrl(url) &&
-      (parsed.pathname.startsWith("/doc/") || parsed.pathname.startsWith("/d/"))
+      (parsed.pathname.startsWith(`${contextPath}/doc/`) || parsed.pathname.startsWith(`${contextPath}/d/`))
     );
   } catch (_err) {
     return false;
@@ -85,7 +86,8 @@ export function isDocumentUrl(url: string) {
 export function isCollectionUrl(url: string) {
   try {
     const parsed = new URL(url, env.URL);
-    return isInternalUrl(url) && parsed.pathname.startsWith("/collection/");
+    const contextPath = env.CONTEXT_PATH ?? "";
+    return isInternalUrl(url) && parsed.pathname.startsWith(`${contextPath}/collection/`);
   } catch (_err) {
     return false;
   }

@@ -54,7 +54,7 @@ export default () =>
           globPatterns: ["**/*.{js,css,ico,png,svg}"],
           navigateFallback: null,
           modifyURLPrefix: {
-            "": `${environment.CDN_URL ?? ""}/static/`,
+            "": `${environment.CDN_URL ?? ""}${environment.CONTEXT_PATH ?? ""}/static/`,
           },
           skipWaiting: true,
           clientsClaim: true,
@@ -96,8 +96,8 @@ export default () =>
           short_name: "Outline",
           theme_color: "#fff",
           background_color: "#fff",
-          start_url: "/",
-          scope: ".",
+          start_url: `${environment.CONTEXT_PATH ?? ""}/`,
+          scope: `${environment.CONTEXT_PATH ?? ""}/`,
           display: "standalone",
           // For Chrome, you must provide at least a 192x192 pixel icon, and a 512x512 pixel icon.
           // If only those two icon sizes are provided, Chrome will automatically scale the icons
@@ -105,18 +105,18 @@ export default () =>
           // pixel-perfection, provide icons in increments of 48dp.
           icons: [
             {
-              src: "/images/icon-192.png",
+              src: `${environment.CONTEXT_PATH ?? ""}/images/icon-192.png`,
               sizes: "192x192",
               type: "image/png",
             },
             {
-              src: "/images/icon-512.png",
+              src: `${environment.CONTEXT_PATH ?? ""}/images/icon-512.png`,
               sizes: "512x512",
               type: "image/png",
             },
             // last one duplicated for purpose: 'any maskable'
             {
-              src: "/images/icon-512.png",
+              src: `${environment.CONTEXT_PATH ?? ""}/images/icon-512.png`,
               sizes: "512x512",
               type: "image/png",
               purpose: "any maskable",

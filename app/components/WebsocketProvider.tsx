@@ -29,6 +29,7 @@ import Subscription from "~/models/Subscription";
 import Team from "~/models/Team";
 import User from "~/models/User";
 import UserMembership from "~/models/UserMembership";
+import env from "~/env";
 import withStores from "~/components/withStores";
 import {
   PartialExcept,
@@ -81,7 +82,7 @@ class WebsocketProvider extends Component<Props> {
 
   createConnection = () => {
     this.socket = io(window.location.origin, {
-      path: "/realtime",
+      path: `${env.CONTEXT_PATH || ""}/realtime`,
       transports: ["websocket"],
       reconnectionDelay: 1000,
       reconnectionDelayMax: 30000,
